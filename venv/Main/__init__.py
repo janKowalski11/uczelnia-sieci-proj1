@@ -1,3 +1,9 @@
+#todo refactor class ipValidator to functions
+#add parsing mask from console if no arg given
+##add saving to file
+#punkt 7
+
+
 import sys
 import socket
 import ipaddress
@@ -13,8 +19,10 @@ from model.Converters import invertMask
 from model.Converters import getBroadCast
 from model.Converters import getMaxHostCount
 from model.Converters import getFirstHostAddress
+from model.Converters import getLastHostAddres
 
 # podpunkt numer 2. Jak pobrac lokalna maske ?
+# parsowac ipconfig z konsoli
 
 ip_address = ""
 if len(sys.argv) <= 1:
@@ -32,7 +40,6 @@ ip.setIpAndMask(ip_address)
 
 netAddress=getNetAdress(ip.ipAddress, ip.maskAddress)
 
-# adres sieci za pomoca biblioteki
 getNetClass(ip.ipAddress)
 isPrivate(ip.ipAddress)
 
@@ -49,3 +56,4 @@ broadCast=getBroadCast(netAddress,inverted_mask)
 maxHost=getMaxHostCount(ip_address)
 
 getFirstHostAddress(netAddress)
+getLastHostAddres(broadCast)

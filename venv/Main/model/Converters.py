@@ -22,8 +22,12 @@ def convert_binary_mask_wihout_dots_to_have_dots(mask):
 # podaj maske w formacie z funkcji convert_binary_mask_wihout_dots_to_have_dots
 def convert_binary_mask_with_dots_to_decimal(mask):
     octets = mask.split('.')
+    for idx, val in enumerate(octets):
+        octets[idx]=str(int(val,2))
 
-    return
+    octets=".".join(octets)
+
+    return octets
 
 
 # x konwertowane na wartosc binarna, n liczba zer z przodu
@@ -129,4 +133,14 @@ def getMaxHostCount(fullIpadress): #ip adress in format a.b.c.d/24
 def getFirstHostAddress(netAddress):
     splited=netAddress.split('.')
     lastOctet=splited[3]
-    return
+    result = int(lastOctet,2)+1 # convert to decimal then add 1
+
+    print("adres pierwszego hosta: "+ str(result))
+    return result
+
+def getLastHostAddres(broadCast):
+    lastOctet=broadCast[-8:] # get last 8 chars of str
+    result=int(lastOctet,2) -1 # convert to decimal then subs 1
+    print("adres ostatniego hosta: "+ str(result))
+
+    return result
