@@ -60,3 +60,6 @@ class IpValidator:
             print("maska jest NIE poprawna, zamykam program")
             sys.exit(-1)
         self.consoleInput = argument
+        
+
+        
