@@ -2,24 +2,23 @@ import sys
 from model.Converters import get_bin
 
 
-
 class IpValidator:
-    consoleInput=""
+    consoleInput = ""
 
-    ipAddress = ""
-    maskAddress = ""
+    ipAddress = ""  # format example "124.32.4.1"
+    maskAddress = ""  # format example "24"
 
     def __init__(self):
         print("tworze IpValidator")
 
-    #converts ipAdress to binary octets divided with dots
-    def convertIpToBinaryAndSave(self,ip):
+    # converts ipAdress to binary octets divided with dots
+    def convertIpToBinaryAndSave(self, ip):
         result = ""
         for x in ip:
             result = result + get_bin(int(x), 8) + "."
-        result = result[:-1] #removes last letter from result
+        result = result[:-1]  # removes last letter from result
         print(result)
-        self.ipAddress=result
+        self.ipAddress = result
 
     def validateIp(self, ip):
         if len(ip) != 4:
@@ -40,11 +39,19 @@ class IpValidator:
         else:
             return False
 
-    def setIpAndMask(self, argument):
-        splited = argument.split("/")
+    def setIpAndMaskFromOneArg(self, argument):
+        if('/' in argument):
+            splited = argument.split("/")
+        else:
+            print("podany argument' "+ argument+ " 'jest bledny zamykam program" )
+            sys.exit(-1)
 
-        ip = splited[0].split(".")
-        mask = splited[1]
+        if('.' in argument):
+            ip = splited[0].split(".")
+            mask = splited[1]
+        else:
+            print("podany argument' " + argument + " 'jest bledny zamykam program")
+            sys.exit(-1)
 
         if (self.validateIp(ip)):
             print("adres ip jest poprawny")
@@ -60,6 +67,29 @@ class IpValidator:
             print("maska jest NIE poprawna, zamykam program")
             sys.exit(-1)
         self.consoleInput = argument
-        
 
-        
+    # TODO convert mask to number format!!! i bedzie wtedy kompatybilnosc kiedy uzytkownik podaje dane a kiedy nie
+    def setIpAndMask(self, ip, mask):  # ip format "192.168.102.1" , mask format= "255.255.255.0"
+        ip=ip.split('.')
+        if (self.validateIp(ip)):
+            print("adres ip jest poprawny")
+            self.convertIpToBinaryAndSave(ip)
+        else:
+            print("adres ip jest NIE poprawny, zamykam program")
+            sys.exit(-1)
+
+        # nie ma potrzeby validacji maski pobranej z konsoli bo musi byc poprawna:)
+        mask=mask.split(".")
+
+        #konwersja maski z post typu "255.255.255.0" na binarna
+        for idx, val in enumerate(mask):
+            mask[idx] = get_bin(int(val))
+
+        mask = "".join(mask)
+        self.maskAddress = mask=mask.count('1')
+
+
+
+
+
+

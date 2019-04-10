@@ -1,4 +1,5 @@
 import subprocess
+import model.Converters
 
 
 # konwertuje maske w postaci liczby nalezacej od 0 do 32 np 24
@@ -39,7 +40,7 @@ def get_bin(x, n=8):
 
 
 # ręczna droga obliczania adresu sieci
-def getNetAdress(ip, mask):
+def getNetAdress(ip, mask): #mask format octets with dots
     ip = ip.replace('.', '')  # removs dots from ip to get 1111000... format
     mask = convert_mask_to_binary_without_dots(mask)  # converts mask to 1111000... format
 
@@ -123,10 +124,7 @@ def getBroadCast(netAddress, invertedMask):
     return result;
 
 
-def getMaxHostCount(fullIpadress):  # ip adress in format a.b.c.d/24
-    splited = fullIpadress.split("/")
-    mask = splited[1]
-
+def getMaxHostCount(mask):  # mask format example "24"
     result = 2 ** (32 - int(mask)) - 2
 
     print("max host count: " + str(result))
@@ -159,46 +157,3 @@ def getMaskFromConsole(ip):  # ip format example  '192.168.1.10'
     mask = proc.stdout.readline().rstrip().split(b':')[-1].replace(b' ', b'').decode()
 
     return mask
-
-
-def validateIp(ip): #ip format example '192.168.1.10'
-    if len(ip) != 4:
-        return False
-    else:
-        for x in ip:
-            if not x.isdigit():
-                return False
-            i = int(x)
-            if i < 0 or i > 255:
-                return False
-    return True
-
-
-def validateMask( mask): #mask format example "24"
-    mask_int_value = int(mask)
-    if mask_int_value >= 0 and mask_int_value <= 32:
-        return True
-    else:
-        return False
-
-
-
-    def validateIpAndMask( argument): #argument format example "192.168.1.10/24"
-        splited = argument.split("/")
-
-        ip = splited[0].split(".")
-        mask = splited[1]
-
-        if (self.validateIp(ip)):
-            print("adres ip jest poprawny")
-        else:
-            print("adres ip jest NIE poprawny, zamykam program")
-            sys.exit(-1)
-
-        if (self.validateMask(mask)):
-            print("maska jest poprawna")
-        else:
-            print("maska jest NIE poprawna, zamykam program")
-            sys.exit(-1)
-
-        return
