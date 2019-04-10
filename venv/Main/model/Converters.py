@@ -1,3 +1,5 @@
+import subprocess
+
 # konwertuje maske w postaci liczby nalezacej od 0 do 32 np 24
 # na postac umozliwajaca obliczenie min adres sieci to jest np
 # 11111111111111111111111110000000
@@ -144,3 +146,14 @@ def getLastHostAddres(broadCast):
     print("adres ostatniego hosta: "+ str(result))
 
     return result
+
+def getMaskFromConsole(ip): #ip format example  '192.168.1.10'
+    proc = subprocess.Popen('ipconfig', stdout=subprocess.PIPE)
+    while True:
+        line = proc.stdout.readline()
+        if ip.encode() in line:
+            break
+    mask = proc.stdout.readline().rstrip().split(b':')[-1].replace(b' ', b'').decode()
+    print(mask)
+
+    return mask

@@ -3,6 +3,8 @@
 ##add saving to file
 #punkt 7
 
+#default config ip adress 192.168.1.145/25
+
 
 import sys
 import socket
@@ -20,15 +22,14 @@ from model.Converters import getBroadCast
 from model.Converters import getMaxHostCount
 from model.Converters import getFirstHostAddress
 from model.Converters import getLastHostAddres
+from model.Converters import getMaskFromConsole
 
-# podpunkt numer 2. Jak pobrac lokalna maske ?
-# parsowac ipconfig z konsoli
 
 ip_address = ""
 if len(sys.argv) <= 1:
-    # TODO: get local ip addres with mask if format "a.b.c.d/24"
     ip_address = socket.gethostbyname(socket.gethostname())
-    print("nie podano adresu ip wiec pobieram loalnyy: " + ip_address)
+    mask=getMaskFromConsole(ip_address)
+    print("nie podano adresu ip i maski wiec pobieram loalnyy: " + ip_address)
 elif len(sys.argv) >= 3:
     print("Error: za duzo argumentow, zamykam program")
     sys.exit(-2)
