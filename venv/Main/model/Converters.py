@@ -1,5 +1,6 @@
 import subprocess
 
+
 # konwertuje maske w postaci liczby nalezacej od 0 do 32 np 24
 # na postac umozliwajaca obliczenie min adres sieci to jest np
 # 11111111111111111111111110000000
@@ -25,9 +26,9 @@ def convert_binary_mask_wihout_dots_to_have_dots(mask):
 def convert_binary_mask_with_dots_to_decimal(mask):
     octets = mask.split('.')
     for idx, val in enumerate(octets):
-        octets[idx]=str(int(val,2))
+        octets[idx] = str(int(val, 2))
 
-    octets=".".join(octets)
+    octets = ".".join(octets)
 
     return octets
 
@@ -122,38 +123,82 @@ def getBroadCast(netAddress, invertedMask):
     return result;
 
 
-def getMaxHostCount(fullIpadress): #ip adress in format a.b.c.d/24
+def getMaxHostCount(fullIpadress):  # ip adress in format a.b.c.d/24
     splited = fullIpadress.split("/")
     mask = splited[1]
 
-
     result = 2 ** (32 - int(mask)) - 2
 
-    print("max host count: "+ str(result))
+    print("max host count: " + str(result))
     return result
+
 
 def getFirstHostAddress(netAddress):
-    splited=netAddress.split('.')
-    lastOctet=splited[3]
-    result = int(lastOctet,2)+1 # convert to decimal then add 1
+    splited = netAddress.split('.')
+    lastOctet = splited[3]
+    result = int(lastOctet, 2) + 1  # convert to decimal then add 1
 
-    print("adres pierwszego hosta: "+ str(result))
+    print("adres pierwszego hosta: " + str(result))
     return result
+
 
 def getLastHostAddres(broadCast):
-    lastOctet=broadCast[-8:] # get last 8 chars of str
-    result=int(lastOctet,2) -1 # convert to decimal then subs 1
-    print("adres ostatniego hosta: "+ str(result))
+    lastOctet = broadCast[-8:]  # get last 8 chars of str
+    result = int(lastOctet, 2) - 1  # convert to decimal then subs 1
+    print("adres ostatniego hosta: " + str(result))
 
     return result
 
-def getMaskFromConsole(ip): #ip format example  '192.168.1.10'
+
+def getMaskFromConsole(ip):  # ip format example  '192.168.1.10'
     proc = subprocess.Popen('ipconfig', stdout=subprocess.PIPE)
     while True:
         line = proc.stdout.readline()
         if ip.encode() in line:
             break
     mask = proc.stdout.readline().rstrip().split(b':')[-1].replace(b' ', b'').decode()
-    print(mask)
 
     return mask
+
+
+def validateIp(ip): #ip format example '192.168.1.10'
+    if len(ip) != 4:
+        return False
+    else:
+        for x in ip:
+            if not x.isdigit():
+                return False
+            i = int(x)
+            if i < 0 or i > 255:
+                return False
+    return True
+
+
+def validateMask( mask): #mask format example "24"
+    mask_int_value = int(mask)
+    if mask_int_value >= 0 and mask_int_value <= 32:
+        return True
+    else:
+        return False
+
+
+
+    def validateIpAndMask( argument): #argument format example "192.168.1.10/24"
+        splited = argument.split("/")
+
+        ip = splited[0].split(".")
+        mask = splited[1]
+
+        if (self.validateIp(ip)):
+            print("adres ip jest poprawny")
+        else:
+            print("adres ip jest NIE poprawny, zamykam program")
+            sys.exit(-1)
+
+        if (self.validateMask(mask)):
+            print("maska jest poprawna")
+        else:
+            print("maska jest NIE poprawna, zamykam program")
+            sys.exit(-1)
+
+        return

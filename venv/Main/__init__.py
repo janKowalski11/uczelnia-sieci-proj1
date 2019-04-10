@@ -23,21 +23,25 @@ from model.Converters import getMaxHostCount
 from model.Converters import getFirstHostAddress
 from model.Converters import getLastHostAddres
 from model.Converters import getMaskFromConsole
+from model.Converters import validateIp
+from model.Converters import validateMask
+import model.Converters
 
 
 ip_address = ""
 if len(sys.argv) <= 1:
     ip_address = socket.gethostbyname(socket.gethostname())
     mask=getMaskFromConsole(ip_address)
-    print("nie podano adresu ip i maski wiec pobieram loalnyy: " + ip_address)
+    print("nie podano adresu ip i maski wiec pobieram loalnyy.\n Ip: " + ip_address +"\n Maska: "+ mask)
 elif len(sys.argv) >= 3:
     print("Error: za duzo argumentow, zamykam program")
     sys.exit(-2)
 else:
-    ip_address = sys.argv[1]
+    ipAddressAndMask = sys.argv[1]
+    validateIpAndMask(ipAddressAndMask)
 
-ip = IpValidator()
-ip.setIpAndMask(ip_address)
+# ip = IpValidator()
+# ip.setIpAndMask(ip_address)
 
 netAddress=getNetAdress(ip.ipAddress, ip.maskAddress)
 
