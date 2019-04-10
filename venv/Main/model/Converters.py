@@ -149,16 +149,32 @@ def getMaxHostCount(mask):  # mask format example "24"
 
 
 def getFirstHostAddress(netAddress):
-    splited = netAddress.split('.')
-    lastOctet = splited[3]
-    result = int(lastOctet, 2) + 1  # convert to decimal then add 1
-
-    #konwersja na dziesietne
 
 
-    print("adres pierwszego hosta: " + str(result))
-    writeToFile("adres pierwszego hosta: {}" , str(result))
-    return result
+    #convert to binary
+    octets = netAddress.split('.')
+    for idx, val in enumerate(octets):
+        octets[idx] = str(int(val, 2))
+
+    lastOctet=octets[3]
+    lastOctet=int(lastOctet)+1
+    octets[3]=str(lastOctet) # here we have dec first host address
+    firstHostAddres_dec=".".join(octets)
+
+    print("adres pierwszego hosta decymalnie : "+ str(firstHostAddres_dec))
+    writeToFile("adres pierwszego hosta decymalnie : {}", str(firstHostAddres_dec))
+
+    #konwerja na binarne pierwszego adresu hosta dziesietnego
+    for idx, val in enumerate(octets):
+        octets[idx] = str(get_bin(int(val), 2))
+
+    firstHostAddres_bin = ".".join(octets)
+
+    writeToFile("adres pierwszego hosta binarnie : {}", str(firstHostAddres_bin))
+    print("adres pierwszego hosta binarnie : " + str(firstHostAddres_bin))
+
+
+    return ""
 
 
 def getLastHostAddres(broadCast):
