@@ -1,4 +1,3 @@
-#add parsing mask from console if no arg given
 ##add saving to file
 #punkt 7
 
@@ -40,13 +39,17 @@ else:
 
 
 netAddress=getNetAdress(ip.ipAddress, ip.maskAddress)
-
 getNetClass(ip.ipAddress)
-isPrivate(ip.ipAddress)
+
+print ("czy jest prywatny czy nie: "+str(isPrivate(ip.ipAddress)))
 
 mask_bin_noDots = convert_mask_to_binary_without_dots(ip.maskAddress)
+
 mask_bin_dots= convert_binary_mask_wihout_dots_to_have_dots(mask_bin_noDots)
+print("maska binanie: "+ mask_bin_dots)
+
 mask_dec_dots=convert_binary_mask_with_dots_to_decimal(mask_bin_dots)
+print("maska dziesietnie: "+ mask_dec_dots)
 
 inverted_mask=invertMask(mask_bin_noDots)
 

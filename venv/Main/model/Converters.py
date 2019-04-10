@@ -12,16 +12,14 @@ def convert_mask_to_binary_without_dots(mask):
     for x in range(int(mask), 32):  # for (i=0; i <mask; i++)
         convertedMask = convertedMask + "0"
 
-    print("przekonvertowana maska: " + str(mask) + " na postac: " + convertedMask + " dlugosc jej: " + str(
-        len(convertedMask)))
     return convertedMask
 
 
 # zeby zadzialalo to podaj maske w formacie otrzymanym z funkcji convert_mask_to_binary_without_dots
 def convert_binary_mask_wihout_dots_to_have_dots(mask):
     mask = '.'.join(mask[i:i + 8] for i in range(0, len(mask), 8))
-    return mask
 
+    return mask
 
 # podaj maske w formacie z funkcji convert_binary_mask_wihout_dots_to_have_dots
 def convert_binary_mask_with_dots_to_decimal(mask):
@@ -54,6 +52,7 @@ def getNetAdress(ip, mask): #mask format octets with dots
 
     result = '.'.join(result[i:i + 8] for i in range(0, len(result), 8))  # wstawianie kropki co 8 znakow
 
+    print("adres sieci: "+ result)
     return result
 
 
@@ -61,16 +60,19 @@ def getNetClass(ipAddress):
     firstOctet = ipAddress[:8]  # wytnij pierwsze 8 znakow
     firstOctet = int(firstOctet, 2)  # rzutuj na decimal
 
+    res=""
     if (firstOctet <= 127):
-        return "A"
+        res= "A"
     elif (firstOctet >= 128 and firstOctet <= 191):
-        return "B"
+        res= "B"
     elif (firstOctet >= 192 and firstOctet <= 223):
-        return "C"
+        res= "C"
     elif (firstOctet >= 224 and firstOctet <= 239):
-        return "D"
+        res= "D"
     elif (firstOctet >= 240 and firstOctet <= 255):
-        return "E"
+        res= "E"
+    print("klasa sieci: "+ res)
+    return res
 
 
 def isPrivate(ipAddress):
@@ -104,7 +106,6 @@ def invertMask(mask):
             mask_chars[i] = '1'
 
     inverted_mask = "".join(mask_chars)
-    print("inverted mask: " + inverted_mask)
     return inverted_mask
 
 
@@ -119,9 +120,19 @@ def getBroadCast(netAddress, invertedMask):
     result = bin(result)  # wartosci operacji and daja wynik  i konwersja do bin
     result = result.replace('0b', "")
 
-    print("board cast adress: " + result)
+    #wstaw kropki co 8 indexow
+    bin_res = '.'.join(result[i:i + 8] for i in range(0, len(result), 8))
+    print("boardcast adress binarnie: " + bin_res)
 
-    return result;
+    #konwersja na dziesietne
+    dec_res = bin_res.split('.')
+    for idx, val in enumerate(dec_res):
+        dec_res[idx] = str(int(val, 2))
+
+    dec_res = ".".join(dec_res)
+    print("boardcast adress dziesietnie: " + dec_res)
+
+    return result; #res format to binarny bez kropek:)
 
 
 def getMaxHostCount(mask):  # mask format example "24"

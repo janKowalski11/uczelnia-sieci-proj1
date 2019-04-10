@@ -9,7 +9,7 @@ class IpValidator:
     maskAddress = ""  # format example "24"
 
     def __init__(self):
-        print("tworze IpValidator")
+        print("------------------")
 
     # converts ipAdress to binary octets divided with dots
     def convertIpToBinaryAndSave(self, ip):
@@ -17,7 +17,6 @@ class IpValidator:
         for x in ip:
             result = result + get_bin(int(x), 8) + "."
         result = result[:-1]  # removes last letter from result
-        print(result)
         self.ipAddress = result
 
     def validateIp(self, ip):
@@ -54,7 +53,6 @@ class IpValidator:
             sys.exit(-1)
 
         if (self.validateIp(ip)):
-            print("adres ip jest poprawny")
             self.convertIpToBinaryAndSave(ip)
         else:
             print("adres ip jest NIE poprawny, zamykam program")
