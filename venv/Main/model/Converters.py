@@ -150,8 +150,7 @@ def getMaxHostCount(mask):  # mask format example "24"
 
 def getFirstHostAddress(netAddress):
 
-
-    #convert to binary
+    #convert to decimal
     octets = netAddress.split('.')
     for idx, val in enumerate(octets):
         octets[idx] = str(int(val, 2))
@@ -166,7 +165,7 @@ def getFirstHostAddress(netAddress):
 
     #konwerja na binarne pierwszego adresu hosta dziesietnego
     for idx, val in enumerate(octets):
-        octets[idx] = str(get_bin(int(val), 2))
+        octets[idx] = str(get_bin(int(val)))
 
     firstHostAddres_bin = ".".join(octets)
 
@@ -178,12 +177,30 @@ def getFirstHostAddress(netAddress):
 
 
 def getLastHostAddres(broadCast):
-    lastOctet = broadCast[-8:]  # get last 8 chars of str
-    result = int(lastOctet, 2) - 1  # convert to decimal then subs 1
+    # convert to decimal
+    broadCast = '.'.join(broadCast[i:i + 8] for i in range(0, len(broadCast), 8)) # daj kropki co 8 znakow
+    octets = broadCast.split('.')
+    for idx, val in enumerate(octets):
+        octets[idx] = str(int(val, 2))
 
-    print("adres ostatniego hosta: " + str(result))
-    writeToFile("adres ostatniego hosta: {}" , str(result))
-    return result
+    lastOctet = octets[3]
+    lastOctet = int(lastOctet) -1
+    octets[3] = str(lastOctet)  # here we have dec last host address
+    lastHostAddres_dec = ".".join(octets)
+
+    print("adres osatniego hosta decymalnie : " + str(lastHostAddres_dec))
+    writeToFile("adres ostatniego hosta decymalnie : {}", str(lastHostAddres_dec))
+
+    # konwerja na binarne pierwszego adresu hosta dziesietnego
+    for idx, val in enumerate(octets):
+        octets[idx] = str(get_bin(int(val)))
+
+    lastHostAddres_bin = ".".join(octets)
+
+    writeToFile("adres ostatniego hosta binarnie : {}", str(lastHostAddres_bin))
+    print("adres ostatniego hosta binarnie : " + str(lastHostAddres_bin))
+
+    return ""
 
 
 def getMaskFromConsole(ip):  # ip format example  '192.168.1.10'
