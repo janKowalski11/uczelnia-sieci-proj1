@@ -21,6 +21,7 @@ from model.Converters import getMaxHostCount
 from model.Converters import getFirstHostAddress
 from model.Converters import getLastHostAddres
 from model.Converters import getMaskFromConsole
+from model.Converters import writeToFile
 import model.Converters
 
 ip = IpValidator()
@@ -41,15 +42,19 @@ else:
 netAddress=getNetAdress(ip.ipAddress, ip.maskAddress)
 getNetClass(ip.ipAddress)
 
-print ("czy jest prywatny czy nie: "+str(isPrivate(ip.ipAddress)))
+private=isPrivate(ip.ipAddress)
+print ("czy jest prywatny czy nie: " +str(private))
+writeToFile("czy jest prywatny czy nie: {}",str(private))
 
 mask_bin_noDots = convert_mask_to_binary_without_dots(ip.maskAddress)
 
 mask_bin_dots= convert_binary_mask_wihout_dots_to_have_dots(mask_bin_noDots)
 print("maska binanie: "+ mask_bin_dots)
+writeToFile("maska binanie:  {}",str(mask_bin_dots))
 
 mask_dec_dots=convert_binary_mask_with_dots_to_decimal(mask_bin_dots)
 print("maska dziesietnie: "+ mask_dec_dots)
+writeToFile("maska dziesietnie:  {}",str(mask_dec_dots))
 
 inverted_mask=invertMask(mask_bin_noDots)
 
@@ -59,3 +64,5 @@ maxHost=getMaxHostCount(ip.maskAddress)
 
 getFirstHostAddress(netAddress)
 getLastHostAddres(broadCast)
+
+

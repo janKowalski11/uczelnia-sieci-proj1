@@ -53,6 +53,7 @@ def getNetAdress(ip, mask): #mask format octets with dots
     result = '.'.join(result[i:i + 8] for i in range(0, len(result), 8))  # wstawianie kropki co 8 znakow
 
     print("adres sieci: "+ result)
+    writeToFile("adres sieci: {}",result)
     return result
 
 
@@ -71,7 +72,9 @@ def getNetClass(ipAddress):
         res= "D"
     elif (firstOctet >= 240 and firstOctet <= 255):
         res= "E"
+
     print("klasa sieci: "+ res)
+    writeToFile("klasa sieci: {}", res)
     return res
 
 
@@ -123,6 +126,7 @@ def getBroadCast(netAddress, invertedMask):
     #wstaw kropki co 8 indexow
     bin_res = '.'.join(result[i:i + 8] for i in range(0, len(result), 8))
     print("boardcast adress binarnie: " + bin_res)
+    writeToFile("boardcast adress binarnie: {}" , bin_res)
 
     #konwersja na dziesietne
     dec_res = bin_res.split('.')
@@ -131,6 +135,7 @@ def getBroadCast(netAddress, invertedMask):
 
     dec_res = ".".join(dec_res)
     print("boardcast adress dziesietnie: " + dec_res)
+    writeToFile("boardcast adress dziesietnie: {}" , dec_res)
 
     return result; #res format to binarny bez kropek:)
 
@@ -139,6 +144,7 @@ def getMaxHostCount(mask):  # mask format example "24"
     result = 2 ** (32 - int(mask)) - 2
 
     print("max host count: " + str(result))
+    writeToFile("max host count: {}" , str(result))
     return result
 
 
@@ -147,15 +153,20 @@ def getFirstHostAddress(netAddress):
     lastOctet = splited[3]
     result = int(lastOctet, 2) + 1  # convert to decimal then add 1
 
+    #konwersja na dziesietne
+
+
     print("adres pierwszego hosta: " + str(result))
+    writeToFile("adres pierwszego hosta: {}" , str(result))
     return result
 
 
 def getLastHostAddres(broadCast):
     lastOctet = broadCast[-8:]  # get last 8 chars of str
     result = int(lastOctet, 2) - 1  # convert to decimal then subs 1
-    print("adres ostatniego hosta: " + str(result))
 
+    print("adres ostatniego hosta: " + str(result))
+    writeToFile("adres ostatniego hosta: {}" , str(result))
     return result
 
 
@@ -166,5 +177,8 @@ def getMaskFromConsole(ip):  # ip format example  '192.168.1.10'
         if ip.encode() in line:
             break
     mask = proc.stdout.readline().rstrip().split(b':')[-1].replace(b' ', b'').decode()
-
     return mask
+
+def writeToFile(msg,val):
+    with open("D:\Studia\sem_4\sieci\output.txt", "a") as text_file:
+        print(msg.format(val), file=text_file)
