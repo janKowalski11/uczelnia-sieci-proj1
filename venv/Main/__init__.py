@@ -22,9 +22,12 @@ from model.Converters import getFirstHostAddress
 from model.Converters import getLastHostAddres
 from model.Converters import getMaskFromConsole
 from model.Converters import writeToFile
+from model.Converters import ping
+from model.Converters import ipBinaryToDecimal
 import model.Converters
 
 ip = IpValidator()
+hostadrr = socket.gethostbyname(socket.gethostname()) # host address
 if len(sys.argv) <= 1:
     ip_address = socket.gethostbyname(socket.gethostname())
     mask=getMaskFromConsole(ip_address)
@@ -64,5 +67,9 @@ maxHost=getMaxHostCount(ip.maskAddress)
 
 getFirstHostAddress(netAddress)
 getLastHostAddres(broadCast)
+
+ipDec=ipBinaryToDecimal(ip.ipAddress)
+if(hostadrr==ipDec):
+    ping(ip_address)
 
 
